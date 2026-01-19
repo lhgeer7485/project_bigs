@@ -1,8 +1,10 @@
 import * as React from "react";
 import Button from "./button/Button.tsx";
 import stylesButton from "./button/Button.module.css";
+import stylesButtonAccent from "./button/ButtonAccent.module.css";
 
 interface Props {
+  page: number;
   startPage: number;
   endPage: number;
   goPage: (page: number) => void;
@@ -11,6 +13,7 @@ interface Props {
 }
 
 const Pagination: React.FC<Props> = ({
+  page,
   startPage,
   endPage,
   goPage,
@@ -26,7 +29,7 @@ const Pagination: React.FC<Props> = ({
       ).map((p) => (
         <Button
           onClick={() => goPage(p)}
-          styles={stylesButton}
+          styles={page === p ? stylesButtonAccent : stylesButton}
           text={(p + 1).toString()}
         />
       ))}

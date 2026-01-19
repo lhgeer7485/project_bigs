@@ -35,6 +35,7 @@ const Home = () => {
       <p>{page}</p>
       <Button onClick={onOpenCreateModal} styles={stylesButton} text={"생성"} />
       <Pagination
+        page={page}
         startPage={startPage}
         endPage={endPage}
         goPage={goPage}
