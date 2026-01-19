@@ -1,19 +1,21 @@
 import InputBox from "./InputBox.tsx";
-import useRegister from "../hooks/useRegister.tsx";
+import useSignup from "../hooks/useSignup.tsx";
 
-const Register = () => {
+const Signup = () => {
   const {
     onChangeUsername,
     onChangeName,
     onChangePassword,
     onChangeConfirmPassword,
     onKeyDown,
+    onClick,
+    onBack,
     errUsername,
     errName,
     errPassword,
     errConfirmPassword,
     errMsg,
-  } = useRegister();
+  } = useSignup();
   return (
     <header>
       register
@@ -46,8 +48,10 @@ const Register = () => {
       <div>{errPassword}</div>
       <div>{errConfirmPassword}</div>
       <div>{errMsg}</div>
+      <button onClick={onBack}>취소</button>
+      <button onClick={onClick}>회원가입</button>
     </header>
   );
 };
 
-export default Register;
+export default Signup;

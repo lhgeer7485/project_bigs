@@ -1,4 +1,4 @@
-import api from "../utils/api.ts";
+import { unAuthApi } from "../utils/api.ts";
 
 interface postSignupProps {
   username: string;
@@ -13,13 +13,12 @@ const postSignup = async ({
   password,
   confirmPassword,
 }: postSignupProps) => {
-  const res = await api.post("/auth/signup", {
+  const res = await unAuthApi.post("/auth/signup", {
     username: username,
     name: name,
     password: password,
     confirmPassword: confirmPassword,
   });
-  console.log(res);
   return res.data;
 };
 

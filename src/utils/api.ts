@@ -1,17 +1,57 @@
 import axios from "axios";
+import ZustandStore from "../stores/store.tsx";
+import postRefresh from "../api/postRefresh.ts";
 
-const api = axios.create({
+export const unAuthApi = axios.create({
   baseURL: "/api",
 });
 
-export const getAccessToken = () => localStorage.getItem("accessToken");
-export const setAccessToken = (token: string) =>
-  localStorage.setItem("accessToken", token);
-export const removeAccessToken = () => localStorage.removeItem("accessToken");
+export const api = axios.create({
+  baseURL: "/api",
+});
 
-export const getRefreshToken = () => localStorage.getItem("refreshToken");
-export const setRefreshToken = (refreshToken: string) =>
-  localStorage.setItem("refreshToken", refreshToken);
-export const removeRefreshToken = () => localStorage.removeItem("refreshToken");
+api.interceptors.request.use((config) => {
+  const { accessToken } = ZustandStore.getState();
 
-export default api;
+  if (accessToken) {
+    config.headers.Authorization = `Bearer ${accessToken}`;
+  }
+
+  return config;
+});
+
+api.interceptors.response.use(
+  (res) => res,
+  async (error) => {
+    if (error.response?.status === 401) {
+      const {
+        refreshToken,
+        setAccessToken,
+        removeAccessToken,
+        removeRefreshToken,
+      } = ZustandStore.getState();
+
+      if (!refreshToken) {
+        removeAccessToken();
+        removeRefreshToken();
+        return Promise.reject(error);
+      }
+
+      try {
+        const { accessToken: newAccessToken } = await postRefresh(refreshToken);
+
+        setAccessToken(newAccessToken);
+
+        error.config.headers.Authorization = `Bearer ${newAccessToken}`;
+
+        return api(error.config);
+      } catch (refreshError) {
+        removeAccessToken();
+        removeRefreshToken();
+        return Promise.reject(refreshError);
+      }
+    }
+
+    return Promise.reject(error);
+  },
+);
