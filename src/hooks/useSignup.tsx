@@ -4,8 +4,9 @@ import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { regUsername, regName, regPassword } from "../utils/regex.ts";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
-const useRegister = () => {
+const useSignup = () => {
   const [username, setUsername] = useState<string>("");
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
@@ -25,6 +26,8 @@ const useRegister = () => {
       regUsername.test(value) ? "" : "이메일 형식으로 입력해주세요",
     );
   };
+
+  const navigate = useNavigate();
 
   const onChangeName = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
@@ -50,21 +53,30 @@ const useRegister = () => {
     );
   };
 
-  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === "Enter") {
-      const check =
-        username &&
-        name &&
-        password &&
-        confirmPassword &&
-        !errUsername &&
-        !errName &&
-        !errPassword &&
-        !errConfirmPassword;
+  const signup = () => {
+    const check =
+      username &&
+      name &&
+      password &&
+      confirmPassword &&
+      !errUsername &&
+      !errName &&
+      !errPassword &&
+      !errConfirmPassword;
 
-      if (check) mutation.mutate();
+    if (check) {
+      mutation.mutate();
+      navigate("/login");
     }
   };
+
+  const onKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter") signup();
+  };
+
+  const onClick = () => signup();
+
+  const onBack = () => navigate(-1);
 
   const mutation = useMutation({
     mutationFn: () => postSignup({ username, name, password, confirmPassword }),
@@ -84,6 +96,8 @@ const useRegister = () => {
     onChangePassword,
     onChangeConfirmPassword,
     onKeyDown,
+    onClick,
+    onBack,
     errUsername,
     errName,
     errPassword,
@@ -92,4 +106,4 @@ const useRegister = () => {
   };
 };
 
-export default useRegister;
+export default useSignup;

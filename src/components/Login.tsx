@@ -2,7 +2,14 @@ import InputBox from "./InputBox.tsx";
 import useLogin from "../hooks/useLogin.tsx";
 
 const Login = () => {
-  const { onChangeLoginId, onChangeLoginPw, onKeyDown } = useLogin();
+  const {
+    onChangeLoginId,
+    onChangeLoginPw,
+    onKeyDown,
+    onLogin,
+    onSignup,
+    errMsg,
+  } = useLogin();
 
   return (
     <header>
@@ -18,6 +25,9 @@ const Login = () => {
         onKeyDown={onKeyDown}
         type={"password"}
       />
+      <p>{errMsg}</p>
+      <button onClick={onSignup}>회원가입</button>
+      <button onClick={onLogin}>로그인</button>
     </header>
   );
 };

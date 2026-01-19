@@ -1,14 +1,9 @@
 import "./App.css";
-import Login from "./components/Login.tsx";
-import Register from "./components/Register.tsx";
+import router from "./router.tsx";
+import { RouterProvider } from "react-router-dom";
 
 function App() {
-  return (
-    <>
-      <Login />
-      <Register />
-    </>
-  );
+  return <RouterProvider router={router} />;
 }
 
 export default App;
