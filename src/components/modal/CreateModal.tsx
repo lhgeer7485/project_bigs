@@ -1,6 +1,8 @@
 import styles from "./CreateModal.module.css";
 import * as React from "react";
 import useCreate from "../../hooks/useCreate.tsx";
+import stylesButton from "../button/Button.module.css";
+import Button from "../button/Button.tsx";
 
 interface Props {
   onClose: () => void;
@@ -31,8 +33,8 @@ const CreateModal: React.FC<Props> = ({ onClose }) => {
           <option value={"ETC"}>ETC</option>
         </select>
         <input type="file" onChange={onChangeFile}></input>
-        <button onClick={onCreate}>확인</button>
-        <button onClick={onClose}>취소</button>
+        <Button onClick={onCreate} styles={stylesButton} text={"확인"} />
+        <Button onClick={onClose} styles={stylesButton} text={"취소"} />
       </div>
     </main>
   );

@@ -6,6 +6,8 @@ import useModal from "../hooks/useModal.tsx";
 import CreateModal from "./modal/CreateModal.tsx";
 import Board from "./Board.tsx";
 import Pagination from "./Pagination.tsx";
+import stylesButton from "./button/Button.module.css";
+import Button from "./button/Button.tsx";
 
 const Home = () => {
   const { data, page, startPage, endPage, goPage, onPrevBlock, onNextBlock } =
@@ -31,8 +33,7 @@ const Home = () => {
         />
       ))}
       <p>{page}</p>
-      <button onClick={onOpenCreateModal}>생성</button>
-
+      <Button onClick={onOpenCreateModal} styles={stylesButton} text={"생성"} />
       <Pagination
         startPage={startPage}
         endPage={endPage}

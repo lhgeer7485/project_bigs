@@ -1,4 +1,6 @@
 import * as React from "react";
+import Button from "./button/Button.tsx";
+import stylesButton from "./button/Button.module.css";
 
 interface Props {
   startPage: number;
@@ -17,16 +19,18 @@ const Pagination: React.FC<Props> = ({
 }) => {
   return (
     <div>
-      <button onClick={onPrevBlock}>이전</button>
+      <Button onClick={onPrevBlock} styles={stylesButton} text={"이전"} />
       {Array.from(
         { length: endPage - startPage + 1 },
         (_, i) => startPage + i,
       ).map((p) => (
-        <button key={p} onClick={() => goPage(p)}>
-          {p + 1}
-        </button>
+        <Button
+          onClick={() => goPage(p)}
+          styles={stylesButton}
+          text={(p + 1).toString()}
+        />
       ))}
-      <button onClick={onNextBlock}>다음</button>
+      <Button onClick={onNextBlock} styles={stylesButton} text={"다음"} />
     </div>
   );
 };

@@ -1,5 +1,7 @@
 import InputBox from "./InputBox.tsx";
 import useLogin from "../hooks/useLogin.tsx";
+import Button from "./button/Button.tsx";
+import stylesButton from "./button/Button.module.css";
 
 const Login = () => {
   const {
@@ -26,8 +28,8 @@ const Login = () => {
         type={"password"}
       />
       <p>{errMsg}</p>
-      <button onClick={onSignup}>회원가입</button>
-      <button onClick={onLogin}>로그인</button>
+      <Button onClick={onSignup} styles={stylesButton} text={"회원가입"} />
+      <Button onClick={onLogin} styles={stylesButton} text={"로그인"} />
     </header>
   );
 };
