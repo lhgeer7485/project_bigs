@@ -2,10 +2,16 @@ import useBoardList from "../hooks/useBoardList.tsx";
 import { useNavigate } from "react-router-dom";
 import { useEffect } from "react";
 import ZustandStore from "../stores/store.tsx";
+import useModal from "../hooks/useModal.tsx";
+import CreateModal from "./modal/CreateModal.tsx";
+import Board from "./Board.tsx";
+import Pagination from "./Pagination.tsx";
 
 const Home = () => {
-  const { data, onClick } = useBoardList();
+  const { data, page, startPage, endPage, goPage, onPrevBlock, onNextBlock } =
+    useBoardList();
   const accessToken = ZustandStore((state) => state.accessToken);
+  const { isCreateModal, onOpenCreateModal, onCloseCreateModal } = useModal();
 
   const navigate = useNavigate();
 
@@ -15,8 +21,27 @@ const Home = () => {
 
   return (
     <main>
-      <p>{data?.content.length}</p>
-      <button onClick={onClick}>목록</button>
+      {data?.content.map((board) => (
+        <Board
+          key={board.id}
+          id={board.id}
+          title={board.title}
+          category={board.category}
+          createdAt={board.createdAt}
+        />
+      ))}
+      <p>{page}</p>
+      <button onClick={onOpenCreateModal}>생성</button>
+
+      <Pagination
+        startPage={startPage}
+        endPage={endPage}
+        goPage={goPage}
+        onPrevBlock={onPrevBlock}
+        onNextBlock={onNextBlock}
+      />
+
+      {isCreateModal && <CreateModal onClose={onCloseCreateModal} />}
     </main>
   );
 };
