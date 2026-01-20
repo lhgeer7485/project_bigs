@@ -8,6 +8,8 @@ import Board from "./Board.tsx";
 import Pagination from "./Pagination.tsx";
 import stylesButton from "./button/Button.module.css";
 import Button from "./button/Button.tsx";
+import styles from "./Home.module.css";
+import userImage from "../assets/user.png";
 
 const Home = () => {
   const {
@@ -21,6 +23,8 @@ const Home = () => {
     onPrevBlock,
     onNextBlock,
     onDetail,
+    onPrevPage,
+    onNextPage,
   } = useBoardList();
   const accessToken = ZustandStore((state) => state.accessToken);
   const { isCreateModal, onOpenCreateModal, onCloseCreateModal } = useModal();
@@ -32,19 +36,44 @@ const Home = () => {
   }, [accessToken, navigate]);
 
   return (
-    <main>
-      <p>{loginUsername}</p>
-      <p>{loginName}</p>
-      <ul>
-        {data?.content.map((board) => (
-          <Board
-            key={board.id}
-            board={board}
-            onClick={() => onDetail(board.id)}
-          />
-        ))}
-      </ul>
-      <Button onClick={onOpenCreateModal} styles={stylesButton} text={"생성"} />
+    <main className={styles.container}>
+      <header className={styles.header}>
+        <img src={userImage} alt={"userImage"} className={styles.img} />
+        <div className={styles.between}>
+          <div className={styles.user}>
+            <p className={styles.p}>{loginUsername}</p>
+            <p className={styles.p}>{loginName}</p>
+          </div>
+          <div className={styles.box}>
+            <Button
+              onClick={onOpenCreateModal}
+              styles={stylesButton}
+              text={"작성"}
+            />
+          </div>
+        </div>
+      </header>
+      <table className={styles.table}>
+        <thead className={styles.thead}>
+          <tr className={styles.tr}>
+            <th className={styles.th1}>번호</th>
+            <th className={styles.th2}>제목</th>
+            <th className={styles.th3}>카테고리</th>
+            <th>작성일</th>
+          </tr>
+        </thead>
+        <tbody>
+          {data?.content.map((board) => (
+            <tr
+              key={board.id}
+              onClick={() => onDetail(board.id)}
+              className={styles.tr}
+            >
+              <Board board={board} />
+            </tr>
+          ))}
+        </tbody>
+      </table>
       <Pagination
         page={page}
         startPage={startPage}
@@ -52,6 +81,8 @@ const Home = () => {
         goPage={goPage}
         onPrevBlock={onPrevBlock}
         onNextBlock={onNextBlock}
+        onNextPage={onNextPage}
+        onPrevPage={onPrevPage}
       />
 
       {isCreateModal && <CreateModal onClose={onCloseCreateModal} />}

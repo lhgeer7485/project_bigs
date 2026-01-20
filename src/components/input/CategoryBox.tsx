@@ -1,7 +1,7 @@
 import styles from "./CategoryBox.module.css";
 import * as React from "react";
-import type { Category, CategoryAll } from "../types/Category.ts";
-import useCategoryBox from "../hooks/useCategoryBox.tsx";
+import type { Category, CategoryAll } from "../../types/Category.ts";
+import useCategoryBox from "../../hooks/useCategoryBox.tsx";
 
 interface Props {
   value: Category | CategoryAll;

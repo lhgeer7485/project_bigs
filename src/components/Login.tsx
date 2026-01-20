@@ -1,7 +1,8 @@
-import InputBox from "./InputBox.tsx";
+import InputBox from "./input/InputBox.tsx";
 import useLogin from "../hooks/useLogin.tsx";
 import Button from "./button/Button.tsx";
 import stylesButton from "./button/Button.module.css";
+import styles from "./Login.module.css";
 
 const Login = () => {
   const {
@@ -14,7 +15,7 @@ const Login = () => {
   } = useLogin();
 
   return (
-    <header>
+    <main className={styles.container}>
       <InputBox
         placeholder={"아이디"}
         onChange={onChangeLoginId}
@@ -27,10 +28,14 @@ const Login = () => {
         onKeyDown={onKeyDown}
         type={"password"}
       />
-      <p>{errMsg}</p>
-      <Button onClick={onSignup} styles={stylesButton} text={"회원가입"} />
-      <Button onClick={onLogin} styles={stylesButton} text={"로그인"} />
-    </header>
+      <p className={styles.msg}>{errMsg}</p>
+      <div className={styles.box}>
+        <Button onClick={onSignup} styles={stylesButton} text={"회원가입"} />
+      </div>
+      <div className={styles.box}>
+        <Button onClick={onLogin} styles={stylesButton} text={"로그인"} />
+      </div>
+    </main>
   );
 };
 

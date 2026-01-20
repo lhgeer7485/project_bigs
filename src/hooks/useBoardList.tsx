@@ -36,6 +36,24 @@ const useBoardList = () => {
     }
   };
 
+  const onNextPage = () => {
+    if (page >= totalPages - 1) return;
+    if (page === endPage) {
+      goPage(endPage + 1);
+    } else {
+      goPage(page + 1);
+    }
+  };
+
+  const onPrevPage = () => {
+    if (page <= 0) return;
+    if (page === startPage) {
+      goPage(startPage - 1);
+    } else {
+      goPage(page - 1);
+    }
+  };
+
   const onNextBlock = () => {
     if (endPage < totalPages - 1) goPage(endPage + 1);
   };
@@ -60,6 +78,8 @@ const useBoardList = () => {
     goPage,
     onPrevBlock,
     onNextBlock,
+    onNextPage,
+    onPrevPage,
   };
 };
 

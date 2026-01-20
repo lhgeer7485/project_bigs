@@ -1,10 +1,12 @@
 import type { Category } from "../../types/Category.ts";
 import styles from "./CreateModal.module.css";
-import CategoryBox from "../CategoryBox.tsx";
+import CategoryBox from "../input/CategoryBox.tsx";
 import Button from "../button/Button.tsx";
 import stylesButton from "../button/Button.module.css";
 import * as React from "react";
 import useUpdate from "../../hooks/useUpdate.tsx";
+import InputUpdateBox from "../input/InputUpdateBox.tsx";
+import InputTextAreaUpdateBox from "../input/InputTextAreaUpdateBox.tsx";
 
 interface Props {
   id: number;
@@ -37,18 +39,34 @@ const UpdateModal: React.FC<Props> = ({ id, onClose, prevData }) => {
   return (
     <main className={styles.container} onClick={onClose}>
       <div className={styles.box} onClick={(e) => e.stopPropagation()}>
-        <input onChange={onChangeTitle} value={title}></input>
-        <p>{msgTitle}</p>
-        <input onChange={onChangeContent} value={content}></input>
-        <p>{msgContent}</p>
-        <CategoryBox
-          value={category}
-          onClickCategory={onClickCategory}
-          categories={CATEGORIES}
+        <InputUpdateBox
+          placeholder={"제목"}
+          onChange={onChangeTitle}
+          value={title}
         />
-        <input type="file" onChange={onChangeFile}></input>
-        <Button onClick={onUpdate} styles={stylesButton} text={"확인"} />
-        <Button onClick={onClose} styles={stylesButton} text={"취소"} />
+        <p className={styles.msg}>{msgTitle}</p>
+        <InputTextAreaUpdateBox
+          placeholder={"내용"}
+          onChange={onChangeContent}
+          value={content}
+        />
+        <p className={styles.msg}>{msgContent}</p>
+        <div className={styles.cfBox}>
+          <CategoryBox
+            value={category}
+            onClickCategory={onClickCategory}
+            categories={CATEGORIES}
+          />
+          <input type="file" onChange={onChangeFile} className={styles.file} />
+        </div>
+        <footer className={styles.footer}>
+          <div className={styles.btnBox}>
+            <Button onClick={onUpdate} styles={stylesButton} text={"확인"} />
+          </div>
+          <div className={styles.btnBox}>
+            <Button onClick={onClose} styles={stylesButton} text={"취소"} />
+          </div>
+        </footer>
       </div>
     </main>
   );
