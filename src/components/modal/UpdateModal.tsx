@@ -1,35 +1,45 @@
-import styles from "./CreateModal.module.css";
-import * as React from "react";
-import useCreate from "../../hooks/useCreate.tsx";
-import stylesButton from "../button/Button.module.css";
-import Button from "../button/Button.tsx";
-import CategoryBox from "../CategoryBox.tsx";
 import type { Category } from "../../types/Category.ts";
+import styles from "./CreateModal.module.css";
+import CategoryBox from "../CategoryBox.tsx";
+import Button from "../button/Button.tsx";
+import stylesButton from "../button/Button.module.css";
+import * as React from "react";
+import useUpdate from "../../hooks/useUpdate.tsx";
 
 interface Props {
+  id: number;
   onClose: () => void;
+  prevData: prevData;
+}
+
+interface prevData {
+  title: string;
+  content: string;
+  category: Category;
 }
 
 const CATEGORIES: Category[] = ["NOTICE", "FREE", "QNA", "ETC"];
 
-const CreateModal: React.FC<Props> = ({ onClose }) => {
+const UpdateModal: React.FC<Props> = ({ id, onClose, prevData }) => {
   const {
+    title,
+    content,
+    category,
     onChangeTitle,
     onChangeContent,
     onClickCategory,
     onChangeFile,
-    onCreate,
     msgTitle,
     msgContent,
-    category,
-  } = useCreate({ onClose });
+    onUpdate,
+  } = useUpdate({ id, onClose, prevData });
 
   return (
     <main className={styles.container} onClick={onClose}>
       <div className={styles.box} onClick={(e) => e.stopPropagation()}>
-        <input onChange={onChangeTitle}></input>
+        <input onChange={onChangeTitle} value={title}></input>
         <p>{msgTitle}</p>
-        <input onChange={onChangeContent}></input>
+        <input onChange={onChangeContent} value={content}></input>
         <p>{msgContent}</p>
         <CategoryBox
           value={category}
@@ -37,11 +47,11 @@ const CreateModal: React.FC<Props> = ({ onClose }) => {
           categories={CATEGORIES}
         />
         <input type="file" onChange={onChangeFile}></input>
-        <Button onClick={onCreate} styles={stylesButton} text={"확인"} />
+        <Button onClick={onUpdate} styles={stylesButton} text={"확인"} />
         <Button onClick={onClose} styles={stylesButton} text={"취소"} />
       </div>
     </main>
   );
 };
 
-export default CreateModal;
+export default UpdateModal;

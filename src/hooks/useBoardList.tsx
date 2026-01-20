@@ -3,6 +3,7 @@ import getBoardList from "../api/getBoardList.ts";
 import type { BoardList } from "../types/BoardList.ts";
 import ZustandStore from "../stores/store.tsx";
 import { useShallow } from "zustand/react/shallow";
+import { useNavigate } from "react-router-dom";
 
 const BLOCK_SIZE = 5;
 
@@ -15,6 +16,8 @@ const useBoardList = () => {
       state.loginName,
     ]),
   );
+
+  const navigate = useNavigate();
 
   const { data } = useQuery<BoardList>({
     queryKey: ["boards", page],
@@ -41,6 +44,10 @@ const useBoardList = () => {
     if (startPage > 0) goPage(startPage - 1);
   };
 
+  const onDetail = (id: number) => {
+    navigate(`/boards/${id}`);
+  };
+
   return {
     data,
     page,
@@ -49,6 +56,7 @@ const useBoardList = () => {
     totalPages,
     loginUsername,
     loginName,
+    onDetail,
     goPage,
     onPrevBlock,
     onNextBlock,

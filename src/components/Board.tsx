@@ -2,9 +2,14 @@ import styles from "./Board.module.css";
 import type { Board as BoardType } from "../types/BoardList.ts";
 import * as React from "react";
 
-const Board: React.FC<BoardType> = (board) => {
+interface Props {
+  board: BoardType;
+  onClick: () => void;
+}
+
+const Board: React.FC<Props> = ({ board, onClick }) => {
   return (
-    <li className={styles.container}>
+    <li className={styles.container} onClick={onClick}>
       <p>{board.id}</p>
       <p>{board.title}</p>
       <p>{board.category}</p>

@@ -19,6 +19,8 @@ const ZustandStore = create<Store>()(
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
         userList: state.userList,
+        loginUsername: state.loginUsername,
+        loginName: state.loginName,
       }),
     },
   ),

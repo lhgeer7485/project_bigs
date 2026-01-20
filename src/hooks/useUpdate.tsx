@@ -1,15 +1,23 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import type { Category, CategoryAll } from "../types/Category.ts";
 import * as React from "react";
-import { useMutation, useQueryClient } from "@tanstack/react-query";
-import postBoard from "../api/postBoard.ts";
-import ZustandStore from "../stores/store.tsx";
+import { useMutation } from "@tanstack/react-query";
+import patchBoard from "../api/patchBoard.ts";
+import { useNavigate } from "react-router-dom";
 
 interface Props {
+  id: number;
   onClose: () => void;
+  prevData: prevData;
 }
 
-const useCreate = ({ onClose }: Props) => {
+interface prevData {
+  title: string;
+  content: string;
+  category: Category;
+}
+
+const UseUpdate = ({ id, onClose, prevData }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
   const [category, setCategory] = useState<Category | CategoryAll>("NOTICE");
@@ -17,30 +25,27 @@ const useCreate = ({ onClose }: Props) => {
   const [msgTitle, setMsgTitle] = useState("");
   const [msgContent, setMsgContent] = useState("");
 
-  const queryClient = useQueryClient();
-
-  const setPage = ZustandStore((state) => state.setPage);
-
   const validate = (data: string) => data.length >= 2;
+  const navigate = useNavigate();
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (validate(value)) {
-      setTitle(value);
       setMsgTitle("");
     } else {
       setMsgTitle("제목을 2글자 이상 입력해주세요.");
     }
+    setTitle(value);
   };
 
   const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { value } = e.target;
     if (validate(value)) {
-      setContent(value);
       setMsgContent("");
     } else {
       setMsgContent("내용을 2글자 이상 입력해주세요.");
     }
+    setContent(value);
   };
 
   const onClickCategory = (category: Category | CategoryAll) =>
@@ -51,17 +56,16 @@ const useCreate = ({ onClose }: Props) => {
     if (files && files[0]) setFile(files[0]);
   };
 
-  const onCreate = () => {
+  const onUpdate = () => {
     if (title && !msgTitle && content && !msgContent) {
       mutation.mutate();
     }
   };
 
   const mutation = useMutation({
-    mutationFn: () => postBoard({ title, content, category, file }),
+    mutationFn: () => patchBoard({ id, title, content, category, file }),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["boards"] });
-      setPage(0);
+      navigate("/");
       onClose();
     },
     onError: (error) => {
@@ -69,16 +73,24 @@ const useCreate = ({ onClose }: Props) => {
     },
   });
 
+  useEffect(() => {
+    setTitle(prevData.title);
+    setContent(prevData.content);
+    setCategory(prevData.category);
+  }, []);
+
   return {
+    title,
+    content,
+    category,
+    msgTitle,
+    msgContent,
     onChangeTitle,
     onChangeContent,
     onChangeFile,
-    onCreate,
+    onUpdate,
     onClickCategory,
-    msgTitle,
-    msgContent,
-    category,
   };
 };
 
-export default useCreate;
+export default UseUpdate;
