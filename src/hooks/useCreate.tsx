@@ -3,7 +3,6 @@ import type { Category, CategoryAll } from "../types/Category.ts";
 import * as React from "react";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import postBoard from "../api/postBoard.ts";
-import ZustandStore from "../stores/store.tsx";
 
 interface Props {
   onClose: () => void;
@@ -19,8 +18,6 @@ const useCreate = ({ onClose }: Props) => {
 
   const queryClient = useQueryClient();
 
-  const setPage = ZustandStore((state) => state.setPage);
-
   const validate = (data: string) => data.length >= 2;
 
   const onChangeTitle = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -33,7 +30,7 @@ const useCreate = ({ onClose }: Props) => {
     }
   };
 
-  const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (validate(value)) {
       setContent(value);
@@ -61,7 +58,6 @@ const useCreate = ({ onClose }: Props) => {
     mutationFn: () => postBoard({ title, content, category, file }),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["boards"] });
-      setPage(0);
       onClose();
     },
     onError: (error) => {
