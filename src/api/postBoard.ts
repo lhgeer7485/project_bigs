@@ -1,10 +1,10 @@
 import { api } from "../utils/api.ts";
-import type { Category } from "../types/Category.ts";
+import type { Category, CategoryAll } from "../types/Category.ts";
 
 interface Props {
   title: string;
   content: string;
-  category: Category;
+  category: Category | CategoryAll;
   file?: File | null;
 }
 

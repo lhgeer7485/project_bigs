@@ -15,8 +15,20 @@ const useLogin = () => {
 
   const navigate = useNavigate();
 
-  const [setAccessToken, setRefreshToken] = ZustandStore(
-    useShallow((state) => [state.setAccessToken, state.setRefreshToken]),
+  const [
+    setAccessToken,
+    setRefreshToken,
+    setLoginUsername,
+    setLoginName,
+    getLoginName,
+  ] = ZustandStore(
+    useShallow((state) => [
+      state.setAccessToken,
+      state.setRefreshToken,
+      state.setLoginUsername,
+      state.setLoginName,
+      state.getLoginName,
+    ]),
   );
 
   const onChangeLoginId = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -39,6 +51,8 @@ const useLogin = () => {
   const mutation = useMutation<Login>({
     mutationFn: () => postLogin({ loginId, loginPw }),
     onSuccess: (data) => {
+      setLoginUsername(loginId);
+      setLoginName(getLoginName());
       setAccessToken(data.accessToken);
       setRefreshToken(data.refreshToken);
       navigate("/");

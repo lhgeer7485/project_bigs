@@ -7,8 +7,13 @@ import { useShallow } from "zustand/react/shallow";
 const BLOCK_SIZE = 5;
 
 const useBoardList = () => {
-  const [page, setPage] = ZustandStore(
-    useShallow((state) => [state.page, state.setPage]),
+  const [page, setPage, loginUsername, loginName] = ZustandStore(
+    useShallow((state) => [
+      state.page,
+      state.setPage,
+      state.loginUsername,
+      state.loginName,
+    ]),
   );
 
   const { data } = useQuery<BoardList>({
@@ -42,6 +47,8 @@ const useBoardList = () => {
     startPage,
     endPage,
     totalPages,
+    loginUsername,
+    loginName,
     goPage,
     onPrevBlock,
     onNextBlock,

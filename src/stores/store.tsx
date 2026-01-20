@@ -18,6 +18,7 @@ const ZustandStore = create<Store>()(
       partialize: (state) => ({
         accessToken: state.accessToken,
         refreshToken: state.refreshToken,
+        userList: state.userList,
       }),
     },
   ),
