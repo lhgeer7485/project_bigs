@@ -38,7 +38,7 @@ const UseUpdate = ({ id, onClose, prevData }: Props) => {
     setTitle(value);
   };
 
-  const onChangeContent = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const onChangeContent = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     const { value } = e.target;
     if (validate(value)) {
       setMsgContent("");

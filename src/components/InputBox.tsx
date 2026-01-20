@@ -1,4 +1,5 @@
 import * as React from "react";
+import styles from "./InputBox.module.css";
 
 interface InputBoxProps {
   placeholder: string;
@@ -14,12 +15,15 @@ const InputBox: React.FC<InputBoxProps> = ({
   type,
 }) => {
   return (
-    <input
-      placeholder={placeholder}
-      onChange={onChange}
-      onKeyDown={onKeyDown}
-      type={type}
-    />
+    <main className={styles.container}>
+      <label className={styles.label}>{placeholder}</label>
+      <input
+        className={styles.input}
+        onChange={onChange}
+        onKeyDown={onKeyDown}
+        type={type}
+      />
+    </main>
   );
 };
 
