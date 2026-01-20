@@ -75,8 +75,6 @@ const useSignup = () => {
 
     if (check) {
       mutation.mutate();
-      addUser();
-      navigate("/login");
     }
   };
 
@@ -92,6 +90,8 @@ const useSignup = () => {
     mutationFn: () => postSignup({ username, name, password, confirmPassword }),
     onSuccess: () => {
       setErrMsg("");
+      addUser();
+      navigate("/login");
     },
     onError: (error) => {
       if (axios.isAxiosError(error)) {
