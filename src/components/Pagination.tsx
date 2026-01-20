@@ -28,6 +28,7 @@ const Pagination: React.FC<Props> = ({
         (_, i) => startPage + i,
       ).map((p) => (
         <Button
+          key={p}
           onClick={() => goPage(p)}
           styles={page === p ? stylesButtonAccent : stylesButton}
           text={(p + 1).toString()}

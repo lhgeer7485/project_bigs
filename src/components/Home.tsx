@@ -20,6 +20,7 @@ const Home = () => {
     goPage,
     onPrevBlock,
     onNextBlock,
+    onDetail,
   } = useBoardList();
   const accessToken = ZustandStore((state) => state.accessToken);
   const { isCreateModal, onOpenCreateModal, onCloseCreateModal } = useModal();
@@ -38,10 +39,8 @@ const Home = () => {
         {data?.content.map((board) => (
           <Board
             key={board.id}
-            id={board.id}
-            title={board.title}
-            category={board.category}
-            createdAt={board.createdAt}
+            board={board}
+            onClick={() => onDetail(board.id)}
           />
         ))}
       </ul>
