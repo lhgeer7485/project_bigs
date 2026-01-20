@@ -10,8 +10,17 @@ import stylesButton from "./button/Button.module.css";
 import Button from "./button/Button.tsx";
 
 const Home = () => {
-  const { data, page, startPage, endPage, goPage, onPrevBlock, onNextBlock } =
-    useBoardList();
+  const {
+    data,
+    page,
+    startPage,
+    endPage,
+    loginUsername,
+    loginName,
+    goPage,
+    onPrevBlock,
+    onNextBlock,
+  } = useBoardList();
   const accessToken = ZustandStore((state) => state.accessToken);
   const { isCreateModal, onOpenCreateModal, onCloseCreateModal } = useModal();
 
@@ -23,16 +32,19 @@ const Home = () => {
 
   return (
     <main>
-      {data?.content.map((board) => (
-        <Board
-          key={board.id}
-          id={board.id}
-          title={board.title}
-          category={board.category}
-          createdAt={board.createdAt}
-        />
-      ))}
-      <p>{page}</p>
+      <p>{loginUsername}</p>
+      <p>{loginName}</p>
+      <ul>
+        {data?.content.map((board) => (
+          <Board
+            key={board.id}
+            id={board.id}
+            title={board.title}
+            category={board.category}
+            createdAt={board.createdAt}
+          />
+        ))}
+      </ul>
       <Button onClick={onOpenCreateModal} styles={stylesButton} text={"생성"} />
       <Pagination
         page={page}

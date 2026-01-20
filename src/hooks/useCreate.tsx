@@ -1,5 +1,5 @@
 import { useState } from "react";
-import type { Category } from "../types/Category.ts";
+import type { Category, CategoryAll } from "../types/Category.ts";
 import * as React from "react";
 import { useMutation } from "@tanstack/react-query";
 import postBoard from "../api/postBoard.ts";
@@ -12,7 +12,7 @@ interface Props {
 const useCreate = ({ onClose }: Props) => {
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
-  const [category, setCategory] = useState<Category>("NOTICE");
+  const [category, setCategory] = useState<Category | CategoryAll>("NOTICE");
   const [file, setFile] = useState<File | null>(null);
   const [msgTitle, setMsgTitle] = useState("");
   const [msgContent, setMsgContent] = useState("");
@@ -41,10 +41,8 @@ const useCreate = ({ onClose }: Props) => {
     }
   };
 
-  const onChangeCategory = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const value = e.target.value as Category;
-    setCategory(value);
-  };
+  const onClickCategory = (category: Category | CategoryAll) =>
+    setCategory(category);
 
   const onChangeFile = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { files } = e.target;
@@ -72,11 +70,12 @@ const useCreate = ({ onClose }: Props) => {
   return {
     onChangeTitle,
     onChangeContent,
-    onChangeCategory,
     onChangeFile,
     onCreate,
+    onClickCategory,
     msgTitle,
     msgContent,
+    category,
   };
 };
 

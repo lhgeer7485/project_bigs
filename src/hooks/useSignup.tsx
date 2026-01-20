@@ -5,10 +5,19 @@ import { useMutation } from "@tanstack/react-query";
 import { regUsername, regName, regPassword } from "../utils/regex.ts";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import ZustandStore from "../stores/store.tsx";
+import { useShallow } from "zustand/react/shallow";
 
 const useSignup = () => {
-  const [username, setUsername] = useState<string>("");
-  const [name, setName] = useState<string>("");
+  const [username, setUsername, name, setName, addUser] = ZustandStore(
+    useShallow((state) => [
+      state.username,
+      state.setUsername,
+      state.name,
+      state.setName,
+      state.addUser,
+    ]),
+  );
   const [password, setPassword] = useState<string>("");
   const [confirmPassword, setConfirmPassword] = useState<string>("");
 
@@ -66,6 +75,7 @@ const useSignup = () => {
 
     if (check) {
       mutation.mutate();
+      addUser();
       navigate("/login");
     }
   };
