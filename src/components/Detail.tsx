@@ -3,7 +3,7 @@ import Button from "./button/Button.tsx";
 import stylesButton from "./button/Button.module.css";
 import stylesButtonDelete from "./button/ButtonDelete.module.css";
 import useModal from "../hooks/useModal.tsx";
-import CreateModal from "./modal/CreateModal.tsx";
+import UpdateModal from "./modal/UpdateModal.tsx";
 
 const Detail = () => {
   const { data, onBack, onDelete } = useDetail();
@@ -31,13 +31,14 @@ const Detail = () => {
             text={"수정"}
           />
           {isUpdateModal && (
-            <CreateModal
+            <UpdateModal
+              id={data.id}
+              onClose={onCloseUpdateModal}
               prevData={{
                 title: data.title,
                 content: data.content,
                 category: data.boardCategory,
               }}
-              onClose={onCloseUpdateModal}
             />
           )}
         </main>
